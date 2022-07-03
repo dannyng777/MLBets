@@ -12,7 +12,6 @@
     align-items: center;
 }
 
-
 .login-card {
     width: 500px;
     padding: 50px;
@@ -61,3 +60,10 @@
     margin-bottom: 15px;
 }
 
+.modal {
+    background: black;
+  }
+
+.livegamehome{
+    width: 100%;
+}
