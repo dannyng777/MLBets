@@ -6,16 +6,28 @@ app.use(express.json()); //=> req.body
 
 //ROUTES//
 
+// HOME PAGE
+app.get('/home', function(req, res){
+    res.sendFile(__dirname+'/frontend/index.html');
+    //res.sendFile(__dirname+'/frontend/index.css');
+})
+
+//SIGN UP PAGE
+app.get('/', function(req,res){
+    res.sendFile(__dirname+'/frontend/signup.html');
+    //res.sendFile(__dirname+'/frontend/index.css');
+})
+
 //create a user
-app.post("/users",async(req,res)=>{
+app.post("/newUsers",async(req,res)=>{
     try {
         console.log(req.body.username)
-        const {username} = req.body.username;
-        const {password} = req.body.password;
-        const {email} = req.body.email;
+        const username = req.body.username;
+        const password = req.body.password;
+        const email = req.body.email;
         console.log(username)
         const newUser = await pool.query(
-            "insert into userinfo (username, password, email) values ($1,$2,$3) return *",[username],[password],[email]
+            "insert into userinfo (username, password, email) values ($1,$2,$3)",[username,password,email]
         );
         res.json(newUser);
     } catch (error) {
