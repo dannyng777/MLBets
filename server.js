@@ -10,12 +10,12 @@ app.use(express.json()); //=> req.body
 app.post("/users",async(req,res)=>{
     try {
         console.log(req.body.username)
-        const {username} = req.body.username;
-        const {password} = req.body.password;
-        const {email} = req.body.email;
+        const username = req.body.username;
+        const password = req.body.password;
+        const email = req.body.email;
         console.log(username)
         const newUser = await pool.query(
-            "insert into userinfo (username, password, email) values ($1,$2,$3) return *",[username],[password],[email]
+            `insert into userinfo (username, password, email) values ($1,$2,$3)`,[username,password,email]
         );
         res.json(newUser);
     } catch (error) {
