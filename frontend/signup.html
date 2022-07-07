@@ -73,11 +73,11 @@
             </div>
         </div>
       </nav>
-    <form class="main container ">
+    <form class="main container" action="/newUser" method="POST">
         <div class="login-card" style="background-color: lightgrey">
             <div class="login-header">Create a User</div>
             <h4>Username</h4>
-            <input class="input" type="text" name="username" pattern="[a-z]" maxlength="20" minlength="3" placeholder="Type your username">
+            <input class="input" type="text" name="username"  maxlength="20" minlength="3" placeholder="Type your username">
             <h4>Password</h4>
             <input class="input" type="password" name="password" pattern="^\S{6,}$" onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Must have at least 6 characters' : ''); if(this.checkValidity()) form.password_two.pattern = this.value;" placeholder="Type your password">
             <h4>Re-type Password</h4>
