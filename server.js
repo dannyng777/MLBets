@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 const pool = require("./db");
 
+app.set('view engine','ejs');
+app.use(express.urlencoded({extended:false}))
 app.use(express.json()); //=> req.body
 
 //ROUTES//
@@ -13,15 +15,14 @@ app.get('/home', function(req, res){
 })
 
 //SIGN UP PAGE
-app.get('/', function(req,res){
+app.get('/signup', function(req,res){
     res.sendFile(__dirname+'/frontend/signup.html');
     //res.sendFile(__dirname+'/frontend/index.css');
 })
 
 //create a user
-app.post("/newUsers",async(req,res)=>{
+app.post("/signup",async(req,res)=>{
     try {
-        console.log(req.body.username)
         const username = req.body.username;
         const password = req.body.password;
         const email = req.body.email;
