@@ -45,9 +45,9 @@
                                 <div class="login-card" style="background-color: lightgrey">
                                     <button id="modalexit" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     <h4>Username</h4>
-                                    <input class="input" type="text" name="username" placeholder="Type your username">
+                                    <input class="input" type="text" name="logusername" placeholder="Type your username">
                                     <h4>Password</h4>
-                                    <input class="input" type="password" name="password" placeholder="Type your password">
+                                    <input class="input" type="password" name="logpassword" placeholder="Type your password">
                                     <!-- Forgot your password? -->
                                     <div class="bttn-container">
                                         <a class="login bttn">Login</a>
@@ -73,7 +73,7 @@
             </div>
         </div>
       </nav>
-    <form class="main container" action="/newUser" method="POST">
+    <form class="main container" action="/signup" method="POST">
         <div class="login-card" style="background-color: lightgrey">
             <div class="login-header">Create a User</div>
             <h4>Username</h4>
@@ -82,10 +82,12 @@
             <input class="input" type="password" name="password" pattern="^\S{6,}$" onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Must have at least 6 characters' : ''); if(this.checkValidity()) form.password_two.pattern = this.value;" placeholder="Type your password">
             <h4>Re-type Password</h4>
             <input class="input" type="password" name="re_password" pattern="^\S{6,}$" onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Please enter the same Password as above' : '');" placeholder="Re-type your password">
-            <h4>Birthdate</h4>
-            <input class="input" type="date" name="birthdate" min="1920-01-01"?> 
+            <h4>Email</h4>
+            <input class="input" type="text" name="email" placeholder="Type your email">
+            <!-- <h4>Birthdate</h4>
+            <input class="input" type="date" name="birthdate" min="1920-01-01"?>  -->
             <!-- Forgot your password questions??? -->
-            <button class="login bttn">Create Account</button>
+            <button class="login bttn" type="submit">Create Account</button>
         </div>
     </form>
 </body>
