@@ -1,22 +1,27 @@
 const express = require('express');
+const es6Renderer = require('express-es6-template-engine');
 const app = express();
 const pool = require("./db");
 
-app.set('view engine','ejs');
+app.engine('html', es6Renderer)
+app.set('views','templates')
+app.set('view engine','html');
 app.use(express.urlencoded({extended:false}))
 app.use(express.json()); //=> req.body
+//app.use(express.static(__dirname+'/public'));
 
+let loggedUser;
 //ROUTES//
 
 // HOME PAGE
 app.get('/home', function(req, res){
-    res.sendFile(__dirname+'/frontend/index.html');
+    res.render('home.html');
     //res.sendFile(__dirname+'/frontend/index.css');
 })
 
 //SIGN UP PAGE
 app.get('/signup', function(req,res){
-    res.sendFile(__dirname+'/frontend/signup.html');
+    res.render('signup.html');
     //res.sendFile(__dirname+'/frontend/index.css');
 })
 
@@ -30,7 +35,10 @@ app.post("/signup",async(req,res)=>{
         const newUser = await pool.query(
             "insert into userinfo (username, password, email) values ($1,$2,$3)",[username,password,email]
         );
-        res.json(newUser);
+        //res.json(newUser);
+        loggedUser=username;
+        res.redirect('/home')
+        console.log(loggedUser);
     } catch (error) {
         console.error(error.message);
     }
