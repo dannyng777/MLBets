@@ -22,7 +22,7 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item btn ">
-                        <a class="nav-link" href="./index.html">Home</a>
+                        <a class="nav-link" id="homeJS" href="./home">Home</a>
                     </li>
                     <li class="nav-item btn ">
                         <a class="nav-link" href="#">My Bets</a>
@@ -43,19 +43,16 @@
                         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
                             <div class="modal-content">
-                                <div class="login-card" style="background-color: lightgrey">
-                                    <button id="modalexit" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    <h4>Username</h4>
-                                    <input class="input" type="text" name="username" placeholder="Type your username">
-                                    <h4>Password</h4>
-                                    <input class="input" type="password" name="password" placeholder="Type your password">
-                                    <!-- Forgot your password? -->
-                                    <div class="bttn-container">
-                                        <a class="login bttn">Login</a>
-                                        <div class="sign-up-header">Or sign up below</div>
-                                        <a class="bttn" href="./signup.html">Sign Up</a>
+                                <form class="main container" action="/loggedinUser" method="GET">
+                                    <div class="login-card" style="background-color: lightgrey">
+                                        <div class="login-header">Sign In</div>
+                                        <h4>Username</h4>
+                                        <input class="input" type="text" name="loggedusername" placeholder="Type your username">
+                                        <h4>Password</h4>
+                                        <input class="input" type="password" name="loggedpassword"  placeholder="Type your password">
+                                        <button class="login bttn" type="submit">Sign In</button>
                                     </div>
-                                </div>
+                                </form>
                             </div>
                             </div>
                         </div>

@@ -11,6 +11,7 @@ app.use(express.json()); //=> req.body
 //app.use(express.static(__dirname+'/public'));
 
 let loggedUser;
+let loggedUserId;
 //ROUTES//
 
 // HOME PAGE
@@ -22,6 +23,12 @@ app.get('/home', function(req, res){
 //SIGN UP PAGE
 app.get('/signup', function(req,res){
     res.render('signup.html');
+    //res.sendFile(__dirname+'/frontend/index.css');
+})
+
+//BET HISTORY PAGE
+app.get('/bethistory', function(req, res){
+    res.render('bet_history.html');
     //res.sendFile(__dirname+'/frontend/index.css');
 })
 
@@ -75,7 +82,7 @@ app.get("/users/:id",async(req,res)=>{
 //delete a user
 app.delete("/users/:id",async(req,res)=>{
     try {
-        const {id} = req.params;
+        const id = req.params;
         const deleteUser = await pool.query(
             "DELETE FROM userinfo WHERE user_id = $1",[id]
         )
@@ -84,8 +91,51 @@ app.delete("/users/:id",async(req,res)=>{
         console.error(error.message);
     }
 })
-//
 
-app.listen(3000,()=>{
-    console.log("Server is listening on port 3000")
+/* GET home page. */
+// app.get('/users/:', function (req, res, next) {
+//     res.render('index', {
+//       user: req.session.user,
+//       menus: req.session.menus,
+//       menu_active: req.session.menu_active['/'] || {},
+//       title: '首页'
+//     });
+//   });
+
+
+//Log in to user
+app.get('/loggedinUser', async (req,res)=>{
+    try {
+        console.log('hello world');
+        const correctUser = req.query.loggedusername
+        const correctPass = req.query.loggedpassword
+        
+        console.log(correctUser,correctPass)
+        const loggedinAcc = await pool.query(
+            "SELECT * FROM userinfo where username = ($1) and password = ($2)",[correctUser,correctPass]
+        )
+        console.log(loggedinAcc.rows[0].user_id);
+        loginUserID=loggedinAcc.rows[0].user_id
+        console.log(loginUserID)
+    } catch (error) {
+        console.error(error.message);
+    }
+})
+
+//Get bet history
+
+app.get('/bethistory', async (req,res)=>{
+    try {
+        const history = await pool.query(
+            `SELECT * FROM history WHERE user_id = ($1)`,[loggedUserId]
+        )
+
+        console.log(history);
+    } catch (error) {
+        console.error(error.message);
+    }
+})
+
+app.listen(3001,()=>{
+    console.log("Server is listening on port 3001")
 });
