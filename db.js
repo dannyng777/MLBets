@@ -5,7 +5,7 @@ const pool = new Pool({
     password: '',
     database: 'mlbets_database',
     host: 'localhost',
-    port: '5432'
+    port: '5434'
 })
 
 module.exports = pool;

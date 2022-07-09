@@ -2,12 +2,18 @@ const express = require('express');
 const es6Renderer = require('express-es6-template-engine');
 const app = express();
 const pool = require("./db");
+const session = require('express-session')
 
 app.engine('html', es6Renderer)
 app.set('views','templates')
 app.set('view engine','html');
 app.use(express.urlencoded({extended:false}))
 app.use(express.json()); //=> req.body
+app.use(session({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: true
+  }))
 //app.use(express.static(__dirname+'/public'));
 
 let loggedUser;
@@ -31,14 +37,15 @@ app.post("/signup",async(req,res)=>{
         const username = req.body.username;
         const password = req.body.password;
         const email = req.body.email;
-        console.log(username)
-        const newUser = await pool.query(
-            "insert into userinfo (username, password, email) values ($1,$2,$3)",[username,password,email]
+        
+        //console.log(username)
+        const newUserID = await pool.query(
+            "insert into userinfo (username, password, email) values ($1,$2,$3) returning user_id",[username,password,email]
         );
-        //res.json(newUser);
-        loggedUser=username;
+        console.log(newUserID.rows[0].user_id);
+        req.session.username = newUserID.rows[0].user_id;
         res.redirect('/home')
-        console.log(loggedUser);
+        //console.log(loggedUser);
     } catch (error) {
         console.error(error.message);
     }
@@ -103,6 +110,25 @@ app.delete("/users/:id",async(req,res)=>{
 })
 //
 
+//user wallet
+app.get("/wallet",async(req,res)=>{
+    const {id} = req.params
+    try {
+        const userwallet = await pool.query(
+            "SELECT (wallet) from walletinfo WHERE user_id = ($1)",[req.session.username]
+        )
+        console.log(userwallet)
+        console.log(req.session.username)
+        res.render('wallet',{
+            locals: {
+                walletValue: userwallet
+            }
+        })
+    } catch (error) {
+        console.error(error.message);
+    }
+    console.log(req.params);
+})
 app.listen(3001,()=>{
     console.log("Server is listening on port 3001")
 });
