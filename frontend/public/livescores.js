@@ -54,4 +54,6 @@ const livegames = ()=>{
         .catch(err => console.error(err));
 };
 
-livegames();
+document.getElementById('homeJS').addEventListener('click',(event)=>{
+    livegames();
+})
