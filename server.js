@@ -44,6 +44,23 @@ app.post("/signup",async(req,res)=>{
     }
 })
 
+//log into user
+
+app.get('/loginUser',async(req,res)=>{
+    try {
+        const username = req.query.logInUsername
+        const password = req.query.logInPassword
+        console.log(username)
+        console.log(password)
+        const loggedInUser = await pool.query(
+            "SELECT (username, password) from userinfo WHERE username = ($1) and password = ($2)",[username,password]
+        )
+        res.redirect('/home')
+    } catch (error) {
+        console.log(error.message);
+    }
+})
+
 //get all users
 app.get('/users',async(req,res)=>{
     try {
@@ -86,6 +103,6 @@ app.delete("/users/:id",async(req,res)=>{
 })
 //
 
-app.listen(3000,()=>{
-    console.log("Server is listening on port 3000")
+app.listen(3001,()=>{
+    console.log("Server is listening on port 3001")
 });
