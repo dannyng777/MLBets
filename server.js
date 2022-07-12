@@ -143,6 +143,7 @@ app.get('/loggedinUser', async (req,res)=>{
         loggedUserId=loggedinAcc.rows[0].user_id
         // console.log(loggedUserId)
         res.render('useraccount.html');
+        return loggedUserId
     } catch (error) {
         console.error(error.message);
     }
@@ -156,13 +157,17 @@ app.get("/bethistory11", async (req,res)=>{
         const history = await pool.query(
             `SELECT * FROM history WHERE user_id = ($1)`,[loggedUserId]
         )
-        console.log(history);
+        console.log(history.rows[0].user_id, 'user_id');
+        console.log(history.rows[0].winnings, 'winnings');
+        console.log(history.rows[0].losses, 'losses');
+        console.log(history.rows[0].bets, 'bets');
         // res.send('Hellooo');
 
         res.render('bet_history',{
             locals: {
-                userwin:history,
-                userloss: 1
+                userwin:history.rows[0].winnings,
+                userloss: history.rows[0].losses,
+                userbets:history.rows[0].bets
             }
         })
     } catch (error) {
