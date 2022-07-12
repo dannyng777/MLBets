@@ -17,13 +17,15 @@ app.use(session({
 //app.use(express.static(__dirname+'/public'));
 
 
-let loggedUserID=0;
+
+let loggedUserId=0; //* for logging for bet history //
+
 //ROUTES//
 
 // HOME PAGE
 app.get('/home', function(req, res){
-    res.render('home.html');
-    //res.sendFile(__dirname+'/frontend/index.css');
+    // res.render('home.html');
+    res.sendFile(__dirname+'/templates/home.html');
 })
 
 //SIGN UP PAGE
@@ -157,9 +159,9 @@ app.get("/bethistory11", async (req,res)=>{
     try {
         console.log(loggedUserID,'DANs')
         const history = await pool.query(
-            `SELECT * FROM history WHERE user_id = ($1)`,[loggedUserID]
+            `SELECT * FROM history WHERE user_id = ($1)`,[loggedUserId]
         )
-        console.log(history.rows[0].user_id, 'user_id');
+
         console.log(history.rows[0].winnings, 'winnings');
         console.log(history.rows[0].losses, 'losses');
         console.log(history.rows[0].bets, 'bets');
@@ -180,10 +182,10 @@ app.get("/bethistory11", async (req,res)=>{
 //user wallet
 app.get("/wallet",async(req,res)=>{
     const {id} = req.params
-    //console.log(loginUserID)
+    //console.log(loggedUserId)
     try {
         const userwallet = await pool.query(
-            "SELECT (wallet) from walletinfo WHERE user_id = ($1)",[loggedUserID]
+            "SELECT (wallet) from walletinfo WHERE user_id = ($1)",[loggedUserId]
         );
         //console.log(userwallet)
         console.log(userwallet.rows[0].wallet)

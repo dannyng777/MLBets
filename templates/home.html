@@ -31,7 +31,7 @@
                         <a class="nav-link" href="/bethistory11">Bet History</a>
                     </li>
                     <li class="nav-item btn">
-                        <a class="nav-link" href="./wallet">Wallet</a>
+                        <a class="nav-link" href="/wallet">Wallet</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
@@ -89,5 +89,11 @@
         </div>
     <script src="/frontend/index.js"></script>
     <script src="/frontend/livescores.js"></script>
+    <script src="/frontend/public/livescores.js">
+        const load = () => {
+          console.log("load event detected!");
+        }
+        window.onload = load;
+      </script>
 </body>
 </html>

@@ -53,7 +53,6 @@ const livegames = ()=>{
         })
         .catch(err => console.error(err));
 };
-
-document.getElementById('homeJS').addEventListener('click',(event)=>{
+window.onload = ()=>{
     livegames();
-})
+  };
