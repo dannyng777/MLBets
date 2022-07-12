@@ -18,7 +18,6 @@ app.use(session({
 
 
 let loggedUserID=0;
-let loginUserID=0;
 //ROUTES//
 
 // HOME PAGE
@@ -51,7 +50,7 @@ app.post("/signup",async(req,res)=>{
             "insert into userinfo (username, password, email) values ($1,$2,$3) returning user_id",[username,password,email]
         );
         console.log(newUserID.rows[0].user_id);
-        loginUserID = newUserID.rows[0].user_id;
+        loggedUserID = newUserID.rows[0].user_id;
         //req.session.username = newUserID.rows[0].user_id;
         res.redirect('/home')
         //console.log(loggedUser);
@@ -142,10 +141,10 @@ app.get('/loggedinUser', async (req,res)=>{
             "SELECT * FROM userinfo where username = ($1) and password = ($2)",[correctUser,correctPass]
         )
         console.log(loggedinAcc.rows[0].user_id);
-        loggedUserId=loggedinAcc.rows[0].user_id
+        loggedUserID=loggedinAcc.rows[0].user_id
         // console.log(loggedUserId)
         res.render('useraccount.html');
-        return loggedUserId
+        return loggedUserID
 
     } catch (error) {
         console.error(error.message);
@@ -156,7 +155,7 @@ app.get('/loggedinUser', async (req,res)=>{
 
 app.get("/bethistory11", async (req,res)=>{
     try {
-        console.log(loggedUserId,'DANs')
+        console.log(loggedUserID,'DANs')
         const history = await pool.query(
             `SELECT * FROM history WHERE user_id = ($1)`,[loggedUserID]
         )
@@ -184,7 +183,7 @@ app.get("/wallet",async(req,res)=>{
     //console.log(loginUserID)
     try {
         const userwallet = await pool.query(
-            "SELECT (wallet) from walletinfo WHERE user_id = ($1)",[loginUserID]
+            "SELECT (wallet) from walletinfo WHERE user_id = ($1)",[loggedUserID]
         );
         //console.log(userwallet)
         console.log(userwallet.rows[0].wallet)
@@ -202,17 +201,17 @@ app.get("/wallet",async(req,res)=>{
 //Deposit money
 app.post("/addmoney",async(req,res)=>{
     const {id} = req.params
-    console.log(loginUserID)
+    console.log(loggedUserID)
     try {
         const userwallet = await pool.query(
-            "SELECT (wallet) from walletinfo WHERE user_id = ($1)",[loginUserID]
+            "SELECT (wallet) from walletinfo WHERE user_id = ($1)",[loggedUserID]
         );
         currentValue=userwallet.rows[0].wallet;
         const depositAmount = req.query.deposit;
         const cardNum = req.query.cardNum;
         const sum = currentValue+depositAmount;
         pool.query(
-            "update walletinfo set wallet = ($1) WHERE user_id = ($2)",[sum,loginUserID]
+            "update walletinfo set wallet = ($1) WHERE user_id = ($2)",[sum,loggedUserID]
         );
         res.redirect('/wallet')
         //console.log(userwallet)
