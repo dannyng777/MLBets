@@ -16,8 +16,9 @@ app.use(session({
   }))
 //app.use(express.static(__dirname+'/public'));
 
-let loggedUser;
-let loggedUserId;
+
+let loggedUserID=0;
+let loginUserID=0;
 //ROUTES//
 
 // HOME PAGE
@@ -50,7 +51,8 @@ app.post("/signup",async(req,res)=>{
             "insert into userinfo (username, password, email) values ($1,$2,$3) returning user_id",[username,password,email]
         );
         console.log(newUserID.rows[0].user_id);
-        req.session.username = newUserID.rows[0].user_id;
+        loginUserID = newUserID.rows[0].user_id;
+        //req.session.username = newUserID.rows[0].user_id;
         res.redirect('/home')
         //console.log(loggedUser);
     } catch (error) {
@@ -144,6 +146,7 @@ app.get('/loggedinUser', async (req,res)=>{
         // console.log(loggedUserId)
         res.render('useraccount.html');
         return loggedUserId
+
     } catch (error) {
         console.error(error.message);
     }
@@ -155,7 +158,7 @@ app.get("/bethistory11", async (req,res)=>{
     try {
         console.log(loggedUserId,'DANs')
         const history = await pool.query(
-            `SELECT * FROM history WHERE user_id = ($1)`,[loggedUserId]
+            `SELECT * FROM history WHERE user_id = ($1)`,[loggedUserID]
         )
         console.log(history.rows[0].user_id, 'user_id');
         console.log(history.rows[0].winnings, 'winnings');
@@ -178,15 +181,16 @@ app.get("/bethistory11", async (req,res)=>{
 //user wallet
 app.get("/wallet",async(req,res)=>{
     const {id} = req.params
+    //console.log(loginUserID)
     try {
         const userwallet = await pool.query(
-            "SELECT (wallet) from walletinfo WHERE user_id = ($1)",[req.session.username]
-        )
-        console.log(userwallet)
-        console.log(req.session.username)
+            "SELECT (wallet) from walletinfo WHERE user_id = ($1)",[loginUserID]
+        );
+        //console.log(userwallet)
+        console.log(userwallet.rows[0].wallet)
         res.render('wallet',{
             locals: {
-                walletValue: userwallet
+                walletValue: userwallet.rows[0].wallet
             }
         })
     } catch (error) {
@@ -194,6 +198,39 @@ app.get("/wallet",async(req,res)=>{
     }
     console.log(req.params);
 })
+
+//Deposit money
+app.post("/addmoney",async(req,res)=>{
+    const {id} = req.params
+    console.log(loginUserID)
+    try {
+        const userwallet = await pool.query(
+            "SELECT (wallet) from walletinfo WHERE user_id = ($1)",[loginUserID]
+        );
+        currentValue=userwallet.rows[0].wallet;
+        const depositAmount = req.query.deposit;
+        const cardNum = req.query.cardNum;
+        const sum = currentValue+depositAmount;
+        pool.query(
+            "update walletinfo set wallet = ($1) WHERE user_id = ($2)",[sum,loginUserID]
+        );
+        res.redirect('/wallet')
+        //console.log(userwallet)
+        //console.log(userwallet.rows[0].wallet)
+        // res.render('wallet',{
+        //     locals: {
+        //         walletValue: userwallet.rows[0].wallet
+        //     }
+        // })
+    } catch (error) {
+        console.error(error.message);
+    }
+    console.log(req.params);
+})
+
+
+
+
 app.listen(3001,()=>{
     console.log("Server is listening on port 3001")
 });
