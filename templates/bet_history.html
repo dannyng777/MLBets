@@ -28,37 +28,34 @@
                         <a class="nav-link" href="#">My Bets</a>
                     </li>
                     <li class="nav-item btn ">
-                        <a class="nav-link" href="#">Bet History</a>
+                        <a class="nav-link" href="/bethistory11">Bet History</a>
                     </li>
                     <li class="nav-item btn">
-                        <a class="nav-link" href="#">Wallet</a>
+                        <a class="nav-link" href="./wallet">Wallet</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                         <!-- Button trigger modal -->
-                        <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                            Log In
-                        </button>
+                        <div type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            My Account
+                        </div>
                         <!-- Modal -->
-                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <!-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
                             <div class="modal-content">
-                                <div class="login-card" style="background-color: lightgrey">
-                                    <button id="modalexit" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    <h4>Username</h4>
-                                    <input class="input" type="text" name="username" placeholder="Type your username">
-                                    <h4>Password</h4>
-                                    <input class="input" type="password" name="password" placeholder="Type your password">
-                                    <!-- Forgot your password? -->
-                                    <div class="bttn-container">
-                                        <a class="login bttn">Login</a>
-                                        <div class="sign-up-header">Or sign up below</div>
-                                        <a class="bttn" href="./signup">Sign Up</a>
+                                <form class="main container" action="/loggedinUser" method="GET">
+                                    <div class="login-card" style="background-color: lightgrey">
+                                        <div class="login-header">Sign In</div>
+                                        <h4>Username</h4>
+                                        <input class="input" type="text" name="loggedusername" placeholder="Type your username">
+                                        <h4>Password</h4>
+                                        <input class="input" type="password" name="loggedpassword"  placeholder="Type your password">
+                                        <button class="login bttn" type="submit">Sign In</button>
                                     </div>
-                                </div>
+                                </form>
                             </div>
                             </div>
-                        </div>
+                        </div> -->
                     <li class="nav-item dropdown d-flex" id="dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Setting
@@ -82,7 +79,15 @@
               <div class="col-8">
                 <div id="homePage" style=display:none class="p-3 mt-3 mb-3 col-md"></div>
                 <div id="myBets" style=display:none>My bets</div>
-                <div id="betHistory" style=display:o> Bet History</div>
+                <div id="betHistory" style=display:o>
+                    <h2 class="betPage">Your record.</h2>
+                    <div id="wins">
+                        Win ${userwin}
+                    </div>
+                    <div id="losses">
+                        Losses ${userloss}
+                    </div>
+                </div>
                 <div id="walletPage" style=display:none> Wallet Page</div>
               </div>
               <div class="col">

@@ -133,7 +133,7 @@ app.delete("/users/:id",async(req,res)=>{
 //Log in to user
 app.get('/loggedinUser', async (req,res)=>{
     try {
-        console.log('hello world');
+        // console.log('hello world');
         const correctUser = req.query.loggedusername
         const correctPass = req.query.loggedpassword
         
@@ -142,9 +142,11 @@ app.get('/loggedinUser', async (req,res)=>{
             "SELECT * FROM userinfo where username = ($1) and password = ($2)",[correctUser,correctPass]
         )
         console.log(loggedinAcc.rows[0].user_id);
-        loginUserID=loggedinAcc.rows[0].user_id
-        console.log(loginUserID)
-        res.redirect('/home')
+        loggedUserId=loggedinAcc.rows[0].user_id
+        // console.log(loggedUserId)
+        res.render('useraccount.html');
+        return loggedUserId
+
     } catch (error) {
         console.error(error.message);
     }
@@ -152,13 +154,25 @@ app.get('/loggedinUser', async (req,res)=>{
 
 //Get bet history
 
-app.get('/bethistory', async (req,res)=>{
+app.get("/bethistory11", async (req,res)=>{
     try {
+        console.log(loggedUserId,'DANs')
         const history = await pool.query(
             `SELECT * FROM history WHERE user_id = ($1)`,[loggedUserID]
         )
+        console.log(history.rows[0].user_id, 'user_id');
+        console.log(history.rows[0].winnings, 'winnings');
+        console.log(history.rows[0].losses, 'losses');
+        console.log(history.rows[0].bets, 'bets');
+        // res.send('Hellooo');
 
-        console.log(history);
+        res.render('bet_history',{
+            locals: {
+                userwin:history.rows[0].winnings,
+                userloss: history.rows[0].losses,
+                userbets:history.rows[0].bets
+            }
+        })
     } catch (error) {
         console.error(error.message);
     }
