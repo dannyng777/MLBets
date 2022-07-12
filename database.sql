@@ -9,7 +9,7 @@ CREATE TABLE userInfo(
 
 CREATE TABLE walletInfo(
     user_id SERIAL PRIMARY KEY,
-    wallet VARCHAR (65535),
+    wallet money (65535),
     creditcardNum VARCHAR (20) UNIQUE NOT NULL
 );
 
