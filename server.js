@@ -208,8 +208,8 @@ app.post("/addmoney",async(req,res)=>{
         const userwallet = await pool.query(
             "SELECT (wallet) from walletinfo WHERE user_id = ($1)",[loggedUserID]
         );
-        currentValue=userwallet.rows[0].wallet;
-        const depositAmount = req.query.deposit;
+        currentValue=parseFloat(userwallet.rows[0].wallet.substring(1).replace(/,/g,'')); //<THIS ANNOYING PIECE OF WORK
+        const depositAmount = parseFloat(req.body.deposit);
         const cardNum = req.query.cardNum;
         const sum = currentValue+depositAmount;
         pool.query(
